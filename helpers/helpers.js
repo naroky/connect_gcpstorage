@@ -1,21 +1,12 @@
 const util = require('util')
 const gc = require('../config/')
 const format_path = require('path')
-const bucket = gc.bucket('qreasy_app_storage') // should be your bucket name
-
-/**
- *
- * @param { File } object file object that will be uploaded
- * @description - This function does the following
- * - It uploads a file to the image bucket on Google Cloud
- * - It accepts an object as an argument with the
- *   "originalname" and "buffer" as keys
- */
-
+const bucket = gc.bucket('qreasy-data-folder') // should be your bucket name
+const timestamp = Date.now();
 const uploadImage = (file) => new Promise((resolve, reject) => {
   const { originalname, buffer } = file
 
-  const blob = bucket.file(originalname.replace(/ /g, "_"))
+  const blob = bucket.file("Uploadfile_" + timestamp + "_" + originalname.replace(/ /g, "_"))
   const blobStream = blob.createWriteStream({
     resumable: false
   })

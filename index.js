@@ -3,11 +3,11 @@ const bodyParser = require('body-parser')
 const multer = require('multer')
 const uploadImage = require('./helpers/helpers')
 const app = express()
-
+const port = 3000
 const multerMid = multer({
 storage: multer.memoryStorage(),
 limits: {
-        fileSize: 5 * 1024 * 1024,
+        fileSize: 5000000,
     },
 })
 
@@ -18,11 +18,8 @@ app.use(bodyParser.urlencoded({extended: false}))
   
 app.post('/uploads', async (req, res, next) => {
     try {
-        const myFile = req.file
-        const imageUrl = await uploadImage(myFile)
-        res
-          .status(200)
-          .json({
+        const imageUrl = await uploadImage(req.file)
+        res.status(200).json({
             message: "Upload was successful",
             data: imageUrl
           })
@@ -30,15 +27,16 @@ app.post('/uploads', async (req, res, next) => {
         next(error)
       }
 })
-/*
+
 app.use((err, req, res, next) => {
-    res.status(500).json({
+  console.log(err)
+  res.status(500).json({
       error: err,
       message: 'Internal server error!',
     })
     next()
 })
-*/
-app.listen(9001, () => {
-  console.log('app now listening for requests!!!')
+app.listen(port, () => {
+  console.log('Article : Application for Upload image ')
+  console.log('Application is running in port: ',port)
 })
